@@ -4,6 +4,7 @@ namespace App\Services\Artists\DataTransferObjects;
 
 
 use App\Entity\Artist;
+use App\Entity\Track;
 
 /**
  * @property Artist entity
@@ -40,9 +41,22 @@ class ArtistTracksDTO
         return $this->entity->getDescription();
     }
 
+    /**
+     * @return array
+     */
     public function getTracks(): array
     {
-        return $this->entity->getTracks();
+        $tracks = $this->entity->getTracks();
+        $result = [];
+        /** @var Track $track */
+        foreach ($tracks as $track) {
+            $result[] = ['id' => $track->getId(),
+                'name' => $track->getName(),
+                'link' => $track->getLink(),
+                'cover' => $track->getCover()];
+        }
+
+        return $result;
     }
 
     /**

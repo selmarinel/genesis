@@ -2,7 +2,13 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\Mapping\JoinColumn;
+use Doctrine\ORM\Mapping\JoinTable;
+use Doctrine\ORM\Mapping\ManyToMany;
+use Doctrine\ORM\Mapping\ManyToOne;
+use Doctrine\ORM\Mapping\OneToMany;
 use Symfony\Component\Validator\Constraints\DateTime;
 
 /**
@@ -32,8 +38,8 @@ class Artist
     private $description;
 
     /**
-     * @var array
-     * @ORM\OneToMany(targetEntity="Track", cascade={"persist", "remove"},mappedBy="artist")
+     * One Artist has Many Tracks.
+     * @OneToMany(targetEntity="Track", mappedBy="artist")
      */
     private $tracks;
 
@@ -52,6 +58,7 @@ class Artist
     public function __construct()
     {
         $this->created = new DateTime('now');
+        $this->tracks = new ArrayCollection();
     }
 
     /**
@@ -119,10 +126,7 @@ class Artist
         return $this->created;
     }
 
-    /**
-     * @return array
-     */
-    public function getTracks(): array
+    public function getTracks()
     {
         return $this->tracks;
     }
