@@ -1,16 +1,10 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: selma
- * Date: 24.02.2018
- * Time: 11:45
- */
 
 namespace App\Services\Artists;
 
 
 use App\Repository\ArtistRepository;
-use App\Services\Artists\DataTransferObjects\ArtistTracksDTO;
+use App\Services\DataTransferObjects\ArtistDTO;
 use App\Services\Artists\Exceptions\ArtistNotFoundException;
 use Symfony\Component\HttpFoundation\ParameterBag;
 
@@ -38,7 +32,7 @@ class Handler
         if (!$artistEntity) {
             throw new ArtistNotFoundException;
         }
-        $artist = new ArtistTracksDTO($artistEntity);
+        $artist = new ArtistDTO($artistEntity);
         return $artist();
     }
 
@@ -55,7 +49,7 @@ class Handler
         $result = [];
         /** @var  $artist */
         foreach ($artists as $artist) {
-            $result[] = (new ArtistTracksDTO($artist))();
+            $result[] = (new ArtistDTO($artist))();
         }
         return $result;
     }

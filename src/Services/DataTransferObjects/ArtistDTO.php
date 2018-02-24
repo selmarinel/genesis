@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\Artists\DataTransferObjects;
+namespace App\Services\DataTransferObjects;
 
 
 use App\Entity\Artist;
@@ -9,7 +9,7 @@ use App\Entity\Track;
 /**
  * @property Artist entity
  */
-class ArtistTracksDTO
+class ArtistDTO
 {
     /**
      * @var Artist
@@ -50,12 +50,8 @@ class ArtistTracksDTO
         $result = [];
         /** @var Track $track */
         foreach ($tracks as $track) {
-            $result[] = ['id' => $track->getId(),
-                'name' => $track->getName(),
-                'link' => $track->getLink(),
-                'cover' => $track->getCover()];
+            $result[] = (new TrackDTO($track))();
         }
-
         return $result;
     }
 
