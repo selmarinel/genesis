@@ -39,7 +39,7 @@ class Artist
 
     /**
      * One Artist has Many Tracks.
-     * @OneToMany(targetEntity="Track", mappedBy="artist")
+     * @OneToMany(targetEntity="Track", mappedBy="artist", cascade={"persist"})
      */
     private $tracks;
 
@@ -57,7 +57,8 @@ class Artist
 
     public function __construct()
     {
-        $this->created = new DateTime('now');
+        $this->created = new \DateTime('now');
+        $this->updated = new \DateTime('now');
         $this->tracks = new ArrayCollection();
     }
 
@@ -137,5 +138,13 @@ class Artist
     public function setTracks(array $tracks): void
     {
         $this->tracks = $tracks;
+    }
+
+    /**
+     * @param Track $track
+     */
+    public function addTrack(Track $track): void
+    {
+        $this->tracks->add($track);
     }
 }

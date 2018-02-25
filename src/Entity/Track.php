@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
@@ -37,7 +38,7 @@ class Track
 
     /**
      * Many Tracks have One Artist.
-     * @ManyToOne(targetEntity="Artist", inversedBy="tracks")
+     * @ManyToOne(targetEntity="Artist", inversedBy="tracks", cascade={"persist"})
      * @JoinColumn(name="artist_id", referencedColumnName="id")
      */
     private $artist;
