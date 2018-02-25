@@ -35,6 +35,12 @@ class Handler
         return $this->getFromCacheByKey($key, $closure);
     }
 
+    /**
+     * @param string $key
+     * @param string|null $filter
+     * @param Closure $closure
+     * @return mixed|null
+     */
     public function getFromCacheByFilters(string $key, string $filter = null, Closure $closure)
     {
         $cachedFilter = $this->cache->get("$key.filters");
@@ -56,5 +62,13 @@ class Handler
         }
         sleep(5);
         return $this->getFromCacheByFilters($key, $filter, $closure);
+    }
+
+    /**
+     * @param $key
+     */
+    public function removeKeyFromCache(string $key): void
+    {
+        $this->cache->delete("$key.result");
     }
 }

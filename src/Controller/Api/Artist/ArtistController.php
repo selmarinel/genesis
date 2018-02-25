@@ -5,8 +5,6 @@ namespace App\Controller\Api\Artist;
 use App\Services\Artists\Exceptions\ArtistNotFoundException;
 use App\Services\Artists\Handler;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\Cache\Adapter\RedisAdapter;
-use Symfony\Component\Cache\Simple\FilesystemCache;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -18,15 +16,6 @@ use App\Services\Caching\Handler as CachingService;
  */
 class ArtistController extends Controller
 {
-
-    /** @var RedisAdapter */
-    private $cache;
-
-    public function __construct()
-    {
-        $this->cache = new FilesystemCache();
-    }
-
     /**
      * @param $id
      * @param Handler $handler
@@ -38,11 +27,11 @@ class ArtistController extends Controller
     {
         try {
             $artist = $cachingHandler->getFromCacheByKey("artist.$id", function () use ($handler, $id) {
-                return $artist = $handler->findArtistById($id);
+                return $handler->findArtistById($id);
             });
             return new JsonResponse(['artist' => $artist], Response::HTTP_OK);
         } catch (ArtistNotFoundException $artistNotFoundException) {
-            $this->cache->delete("artist.$id.result");
+            $cachingHandler->removeKeyFromCache("artist.$id");
             return new JsonResponse(['error' => $artistNotFoundException->getMessage()], $artistNotFoundException->getCode());
         }
     }

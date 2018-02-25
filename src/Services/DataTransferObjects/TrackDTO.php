@@ -47,6 +47,15 @@ class TrackDTO
         return $this->entity->getLink();
     }
 
+    public function getTrackArtist()
+    {
+        $artist = $this->entity->getArtist();
+        return [
+            'artist_id' => $artist->getId(),
+            'artist_name' => $artist->getName(),
+        ];
+    }
+
     /**
      * @return array
      */
@@ -58,5 +67,10 @@ class TrackDTO
             'cover' => $this->getTrackCover(),
             'link' => $this->getTrackLink()
         ];
+    }
+
+    public function getWithArtist()
+    {
+        return $this() + $this->getTrackArtist();
     }
 }

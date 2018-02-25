@@ -19,16 +19,18 @@ class TrackRepository extends ServiceEntityRepository
         parent::__construct($registry, Track::class);
     }
 
-    /*
-    public function findBySomething($value)
+    public function search($search, $offset, $take)
     {
-        return $this->createQueryBuilder('t')
-            ->where('t.something = :value')->setParameter('value', $value)
-            ->orderBy('t.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
+        if (!$search) {
+            return $this->findAll();
+        }
+        $qb = $this->createQueryBuilder('t')
+            ->andWhere('t.name like :name')
+            ->setParameter('name', "%$search%")
+            ->setFirstResult($offset)
+            ->setMaxResults($take)
+            ->orderBy('t.name')
+            ->getQuery();
+        return $qb->execute();
     }
-    */
 }
